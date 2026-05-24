@@ -60,7 +60,7 @@ function isValidEmail(email) {
  *   return password.length >= 4;
  */
 function isValidPassword(password) {
-  return password.length >= 8;
+  return password.length >= 4;
 }
 
 /**
