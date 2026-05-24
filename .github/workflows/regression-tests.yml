@@ -1,0 +1,98 @@
+# .github/workflows/regression-tests.yml
+# ============================================================
+# CI/CD: Pruebas de Regresión Automatizadas con Cypress
+#
+# Se ejecuta en cada:
+#   - push a main o develop
+#   - Pull Request hacia main
+#
+# Flujo:
+#   1. Levanta la mini app con http-server
+#   2. Ejecuta todas las pruebas Cypress
+#   3. Sube evidencias (capturas y video) si hay fallos
+# ============================================================
+
+name: 🧪 Pruebas de Regresión — AuthFlow
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  regression-tests:
+    name: Ejecutar pruebas E2E
+    runs-on: ubuntu-latest
+
+    steps:
+      # ── 1. Descargar el código ─────────────────────────────
+      - name: 📥 Checkout repositorio
+        uses: actions/checkout@v4
+
+      # ── 2. Instalar Node.js ────────────────────────────────
+      - name: 🟢 Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: cypress-tests/package-lock.json
+
+      # ── 3. Instalar dependencias de Cypress ───────────────
+      - name: 📦 Instalar dependencias
+        working-directory: cypress-tests
+        run: npm ci
+
+      # ── 4. Instalar servidor HTTP para la mini app ────────
+      - name: 🌐 Instalar http-server
+        run: npm install -g http-server
+
+      # ── 5. Levantar la mini app en background ─────────────
+      - name: 🚀 Iniciar AuthFlow en localhost:5500
+        run: |
+          http-server ./webapp -p 5500 -c-1 &
+          echo "Servidor iniciado con PID $!"
+          # Esperar a que el servidor esté listo
+          sleep 3
+
+      # ── 6. Ejecutar pruebas Cypress ───────────────────────
+      - name: 🧪 Ejecutar pruebas de regresión
+        working-directory: cypress-tests
+        run: npx cypress run --browser chrome --headless
+        env:
+          CYPRESS_BASE_URL: http://localhost:5500
+
+      # ── 7. Subir evidencias si las pruebas fallan ─────────
+      - name: 📸 Subir capturas de pantalla (solo en fallo)
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-screenshots
+          path: cypress-tests/cypress/screenshots
+          retention-days: 7
+
+      - name: 🎬 Subir videos de pruebas
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-videos
+          path: cypress-tests/cypress/videos
+          retention-days: 7
+
+      # ── 8. Resumen de resultados ───────────────────────────
+      - name: 📊 Resumen en el trabajo
+        if: always()
+        run: |
+          echo "## 🧪 Resultado de Pruebas de Regresión" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ job.status }}" == "success" ]; then
+            echo "✅ **Todas las pruebas pasaron correctamente.**" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ **Una o más pruebas fallaron. Revisa los artefactos adjuntos.**" >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Suites | Descripción |" >> $GITHUB_STEP_SUMMARY
+          echo "|--------|-------------|" >> $GITHUB_STEP_SUMMARY
+          echo "| 01-navegacion.cy.js | Flujo de navegación entre pantallas |" >> $GITHUB_STEP_SUMMARY
+          echo "| 02-registro.cy.js   | Validaciones del formulario de registro |" >> $GITHUB_STEP_SUMMARY
+          echo "| 03-login.cy.js      | Login, bienvenida y cierre de sesión |" >> $GITHUB_STEP_SUMMARY

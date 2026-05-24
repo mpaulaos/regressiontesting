@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AuthFlow — Demo CI/CD</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ========================================
+       PANTALLA DE INICIO
+  ======================================== -->
+  <section id="screen-home" class="screen active" data-testid="screen-home">
+    <div class="bg-grid"></div>
+    <div class="card card--hero">
+      <div class="logo-badge">AF</div>
+      <h1 class="hero-title">AuthFlow</h1>
+      <p class="hero-subtitle">
+        Plataforma de autenticación minimalista. Construida para demostrar
+        <em>pruebas de regresión</em> en pipelines CI/CD modernos.
+      </p>
+      <div class="badge-row">
+        <span class="badge">v1.0.0</span>
+        <span class="badge badge--green">Estable</span>
+        <span class="badge badge--blue">CI/CD Ready</span>
+      </div>
+      <div class="btn-group">
+        <button
+          class="btn btn--primary"
+          id="btn-go-login"
+          data-testid="btn-go-login"
+          onclick="showScreen('screen-login')"
+        >
+          Iniciar sesión
+        </button>
+        <button
+          class="btn btn--outline"
+          id="btn-go-register"
+          data-testid="btn-go-register"
+          onclick="showScreen('screen-register')"
+        >
+          Registrarse
+        </button>
+      </div>
+      <p class="hint-text">Demo: usa cualquier correo y contraseña válidos</p>
+    </div>
+  </section>
+
+  <!-- ========================================
+       FORMULARIO DE REGISTRO
+  ======================================== -->
+  <section id="screen-register" class="screen" data-testid="screen-register">
+    <div class="bg-grid"></div>
+    <div class="card card--form">
+      <button class="btn-back" onclick="showScreen('screen-home')" data-testid="btn-back-register">
+        ← Volver
+      </button>
+      <div class="form-header">
+        <div class="logo-badge logo-badge--sm">AF</div>
+        <h2 class="form-title">Crear cuenta</h2>
+        <p class="form-subtitle">Completa los campos para registrarte</p>
+      </div>
+
+      <form id="form-register" novalidate data-testid="form-register">
+
+        <!-- Nombre de usuario -->
+        <div class="field-group">
+          <label for="reg-username" class="field-label">Nombre de usuario</label>
+          <input
+            type="text"
+            id="reg-username"
+            class="field-input"
+            placeholder="ej: juanperez"
+            autocomplete="username"
+            data-testid="reg-username"
+          />
+          <span class="field-error" id="err-reg-username" data-testid="err-reg-username"></span>
+        </div>
+
+        <!-- Correo electrónico -->
+        <div class="field-group">
+          <label for="reg-email" class="field-label">Correo electrónico</label>
+          <input
+            type="email"
+            id="reg-email"
+            class="field-input"
+            placeholder="juan@ejemplo.com"
+            autocomplete="email"
+            data-testid="reg-email"
+          />
+          <span class="field-error" id="err-reg-email" data-testid="err-reg-email"></span>
+        </div>
+
+        <!-- Contraseña -->
+        <div class="field-group">
+          <label for="reg-password" class="field-label">Contraseña</label>
+          <input
+            type="password"
+            id="reg-password"
+            class="field-input"
+            placeholder="Mínimo 8 caracteres"
+            autocomplete="new-password"
+            data-testid="reg-password"
+          />
+          <span class="field-error" id="err-reg-password" data-testid="err-reg-password"></span>
+        </div>
+
+        <!-- Confirmar contraseña -->
+        <div class="field-group">
+          <label for="reg-confirm" class="field-label">Confirmar contraseña</label>
+          <input
+            type="password"
+            id="reg-confirm"
+            class="field-input"
+            placeholder="Repite la contraseña"
+            autocomplete="new-password"
+            data-testid="reg-confirm"
+          />
+          <span class="field-error" id="err-reg-confirm" data-testid="err-reg-confirm"></span>
+        </div>
+
+        <button type="submit" class="btn btn--primary btn--full" data-testid="btn-register-submit">
+          Crear cuenta
+        </button>
+
+      </form>
+
+      <p class="switch-text">
+        ¿Ya tienes cuenta?
+        <button class="link-btn" onclick="showScreen('screen-login')" data-testid="link-go-login">Inicia sesión</button>
+      </p>
+    </div>
+  </section>
+
+  <!-- ========================================
+       FORMULARIO DE LOGIN
+  ======================================== -->
+  <section id="screen-login" class="screen" data-testid="screen-login">
+    <div class="bg-grid"></div>
+    <div class="card card--form">
+      <button class="btn-back" onclick="showScreen('screen-home')" data-testid="btn-back-login">
+        ← Volver
+      </button>
+      <div class="form-header">
+        <div class="logo-badge logo-badge--sm">AF</div>
+        <h2 class="form-title">Bienvenido</h2>
+        <p class="form-subtitle">Accede a tu cuenta</p>
+      </div>
+
+      <form id="form-login" novalidate data-testid="form-login">
+
+        <!-- Correo electrónico -->
+        <div class="field-group">
+          <label for="login-email" class="field-label">Correo electrónico</label>
+          <input
+            type="email"
+            id="login-email"
+            class="field-input"
+            placeholder="juan@ejemplo.com"
+            autocomplete="email"
+            data-testid="login-email"
+          />
+          <span class="field-error" id="err-login-email" data-testid="err-login-email"></span>
+        </div>
+
+        <!-- Contraseña -->
+        <div class="field-group">
+          <label for="login-password" class="field-label">Contraseña</label>
+          <input
+            type="password"
+            id="login-password"
+            class="field-input"
+            placeholder="Tu contraseña"
+            autocomplete="current-password"
+            data-testid="login-password"
+          />
+          <span class="field-error" id="err-login-password" data-testid="err-login-password"></span>
+        </div>
+
+        <button type="submit" class="btn btn--primary btn--full" data-testid="btn-login-submit">
+          Iniciar sesión
+        </button>
+
+      </form>
+
+      <p class="switch-text">
+        ¿No tienes cuenta?
+        <button class="link-btn" onclick="showScreen('screen-register')" data-testid="link-go-register">Regístrate</button>
+      </p>
+    </div>
+  </section>
+
+  <!-- ========================================
+       PANTALLA DE BIENVENIDA
+  ======================================== -->
+  <section id="screen-welcome" class="screen" data-testid="screen-welcome">
+    <div class="bg-grid bg-grid--accent"></div>
+    <div class="card card--welcome">
+      <div class="welcome-icon">✓</div>
+      <h2 class="welcome-title">¡Bienvenido/a al sistema!</h2>
+      <p class="welcome-name" id="welcome-name" data-testid="welcome-name">Usuario</p>
+      <p class="welcome-desc">
+        Has accedido correctamente. Esta pantalla valida el flujo completo
+        de autenticación en las pruebas E2E.
+      </p>
+      <div class="session-info">
+        <div class="session-row">
+          <span class="session-key">Estado</span>
+          <span class="session-val session-val--green">Autenticado</span>
+        </div>
+        <div class="session-row">
+          <span class="session-key">Sesión iniciada</span>
+          <span class="session-val" id="session-time" data-testid="session-time">—</span>
+        </div>
+        <div class="session-row">
+          <span class="session-key">Método</span>
+          <span class="session-val" id="session-method" data-testid="session-method">—</span>
+        </div>
+      </div>
+      <button
+        class="btn btn--danger btn--full"
+        id="btn-logout"
+        data-testid="btn-logout"
+        onclick="logout()"
+      >
+        Cerrar sesión
+      </button>
+    </div>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>

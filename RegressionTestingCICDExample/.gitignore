@@ -1,0 +1,10 @@
+# Dependencias de Node (se instalan con npm install)
+node_modules/
+
+# Evidencias generadas por Cypress
+cypress-tests/cypress/screenshots/
+cypress-tests/cypress/videos/
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
