@@ -40,7 +40,7 @@ jobs:
 
       # ── 3. Instalar dependencias de Cypress ───────────────
       - name: 📦 Instalar dependencias
-        working-directory: cypress-tests
+        working-directory: cypress-test
         run: npm ci
 
       # ── 4. Instalar servidor HTTP para la mini app ────────
@@ -57,7 +57,7 @@ jobs:
 
       # ── 6. Ejecutar pruebas Cypress ───────────────────────
       - name: 🧪 Ejecutar pruebas de regresión
-        working-directory: cypress-tests
+        working-directory: cypress-test
         run: npx cypress run --browser chrome --headless
         env:
           CYPRESS_BASE_URL: http://localhost:5500
@@ -68,7 +68,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: cypress-screenshots
-          path: cypress-tests/cypress/screenshots
+          path: cypress-test/cypress/screenshots
           retention-days: 7
 
       - name: 🎬 Subir videos de pruebas
@@ -76,7 +76,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: cypress-videos
-          path: cypress-tests/cypress/videos
+          path: cypress-test/cypress/videos
           retention-days: 7
 
       # ── 8. Resumen de resultados ───────────────────────────
