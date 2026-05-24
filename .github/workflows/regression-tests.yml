@@ -27,7 +27,7 @@ jobs:
       # =========================
       - name: Iniciar aplicación
         run: |
-          cd webapp
+          cd RegressionTestingCICDExample
           http-server -p 5500 &
       
       # =========================
