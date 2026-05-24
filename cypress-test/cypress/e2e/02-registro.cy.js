@@ -8,7 +8,7 @@
 describe('Formulario de Registro', () => {
 
   beforeEach(() => {
-    cy.visitApp();
+    cy.visit('http://127.0.0.1:5500');
     cy.get('[data-testid="btn-go-register"]').click();
     cy.get('[data-testid="screen-register"]').should('be.visible');
   });

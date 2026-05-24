@@ -6,7 +6,7 @@
 describe('Navegación general', () => {
 
   beforeEach(() => {
-    cy.visit('http://localhost:5500');
+    cy.visit('http://127.0.0.1:5500');
   });
 
   it('muestra la pantalla de inicio al cargar', () => {

@@ -6,7 +6,7 @@
 describe('Formulario de Login', () => {
 
   beforeEach(() => {
-    cy.visitApp();
+    cy.visit('http://127.0.0.1:5500');
     cy.get('[data-testid="btn-go-login"]').click();
     cy.get('[data-testid="screen-login"]').should('be.visible');
   });
