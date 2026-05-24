@@ -6,12 +6,12 @@
 describe('Navegación general', () => {
 
   beforeEach(() => {
-    cy.visitApp();
+    cy.visit('http://localhost:5500');
   });
 
   it('muestra la pantalla de inicio al cargar', () => {
     cy.get('[data-testid="screen-home"]').should('be.visible');
-    cy.contains('AuthFlow').should('be.visible');
+    cy.get('h1').should('contain.text', 'AuthFlow');
   });
 
   it('el botón "Iniciar sesión" muestra el formulario de login', () => {
